@@ -3,7 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
+    <title>Document</ti<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        video {
+            margin-top: 20px;
+            width: 640px;
+            height: 480px;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <button id="startBtn" onclick="opencam()" class="button po-1">Open Webcam</button>
+    <button id="clodeBtn" onclick="closecam()" class="button po-2">Close Webcam</button>
+    <video id="videoCam"></video>
+    <script>
+        function opencam(){
+            let all_media = navigator.mediaDevices;
+            if(!all_media || !all_media.getUserMedia){
+                console.log("getUserMedia() not supported.");
+                return;
+            }
+            all_media.getUserMedia({
+                video: true
+            })
+            .then(function(vidStrem){
+                var video = document.getElementById('videoCam');
+                if("srcObject" in video){
+                    video.srcObject = vidStrem;
+                }
+                else{
+                    video.src = window.URL.createObjectURL(vidStrem);
+                }
+                video.onloadedmetadata = function(e){
+                    video.play();
+                };
+            })
+            .catch(function(e){
+                console.log(e.name + ": " + e.message);
+            });
+        }
+
+        function closecam(){
+            var video = document.getElementById('videoCam');
+            if (video.srcObject) {
+                let tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+    </script>
+</body>
+</html>
+tle>
     <style>
         body{
     background-color: black;
